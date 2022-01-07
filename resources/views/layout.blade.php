@@ -25,9 +25,7 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link btn btn-dark"  href="{{route('index')}}">Home</a>
-                  </li>
+                  
                   @guest
                     <li class="nav-item">
                       <a class="nav-link btn btn-dark"   href="{{route('register')}}">Register</a>
@@ -38,7 +36,10 @@
                       
                   @else 
                   <li class="nav-item">
-                    <a class="nav-link btn btn-dark"  href="{{route('task.create')}}">New Task</a>
+                    <a class="nav-link btn btn-dark"  href="{{route('index')}}">All Tasks</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link btn btn-dark"  href="{{route('task.show', Auth::user()->id)}}">My Tasks</a>
                   </li>
                   <li class="nav-item">
                     <form action="{{route('logout'), Auth::user()->id}}" method="POST">

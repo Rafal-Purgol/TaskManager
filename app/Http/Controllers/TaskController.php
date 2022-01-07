@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -25,7 +27,19 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('create');
+        $i =0;
+        $userlist =[];
+        $users = DB::table('users')->select('id', 'name')->get();
+        foreach ($users as $user =>$key)
+        {
+            array_push($userlist,
+            [   'label' => $users[$i]->name,
+                'value' => $users[$i]->id
+            ],);
+        $i++;
+        };
+
+        return view('create', compact('userlist'));
     }
 
     /**
@@ -38,14 +52,15 @@ class TaskController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'dt_ddl' => 'required'
+            'dt_ddl' => 'required',
+            'rspusr' => 'required'
         ]);
         $task = new Task();
         $task -> title = $request->title;
         $task -> dscrpt = $request->dscrpt;
         $task -> dt_ddl = $request->dt_ddl;
-        $task -> adduid = auth()->user()->id;
-        $task -> rspusr = auth()->user()->id;
+        $task -> addusr = Auth::user()->id;
+        $task -> rspusr = $request->rspusr;
         $task->save();
         return redirect()->route('index');
     }
@@ -58,7 +73,8 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        //
+        $tasks = DB::table('tasks')->where('rspusr', '=', $id)->get();
+        return view('index', compact('tasks'));
     }
 
     /**
@@ -80,7 +96,19 @@ class TaskController extends Controller
             'value' => 'false',
         ]
         ];
-        return view('edit', compact('statuses','task'));
+        $i =0;
+        $userlist =[];
+        $users = DB::table('users')->select('id', 'name')->get();
+        foreach ($users as $user =>$key)
+        {
+        $userlist = [
+            [   'label' => $users[$i]->name,
+                'value' => $users[$i]->id
+            ],
+        ];
+        $i++;
+        };
+        return view('edit', compact('statuses','task', 'userlist'));
     }
 
     /**
@@ -97,6 +125,7 @@ class TaskController extends Controller
         $task -> dscrpt = $request->dscrpt;
         $task -> dt_ddl = $request->dt_ddl;
         $task -> is_com = $request->is_com;
+        $task -> rspusr = $request->rspusr;
         $task->save();
         return redirect()->route('index');
     }
