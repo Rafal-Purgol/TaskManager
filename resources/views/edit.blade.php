@@ -36,7 +36,12 @@
             </select>
         </div>
     <div class="form-group mb-3">
-        <button type="submit" class="btn btn-primary">Edit Task</button>
+        <div class="form-group col-md-6" style="float: left">
+            
+            </select>
+        </div>
+            <button type="submit" class="btn btn-primary float-end" style="margin-top: 25px">Edit Task</button>
+        
     </div>
 </form>
 </div>

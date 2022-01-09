@@ -96,19 +96,7 @@ class TaskController extends Controller
             'value' => 'false',
         ]
         ];
-        $i =0;
-        $userlist =[];
-        $users = DB::table('users')->select('id', 'name')->get();
-        foreach ($users as $user =>$key)
-        {
-        $userlist = [
-            [   'label' => $users[$i]->name,
-                'value' => $users[$i]->id
-            ],
-        ];
-        $i++;
-        };
-        return view('edit', compact('statuses','task', 'userlist'));
+        return view('edit', compact('statuses','task'));
     }
 
     /**
