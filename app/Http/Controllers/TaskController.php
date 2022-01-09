@@ -53,14 +53,13 @@ class TaskController extends Controller
         $request->validate([
             'title' => 'required',
             'dt_ddl' => 'required',
-            'rspusr' => 'required'
         ]);
         $task = new Task();
         $task -> title = $request->title;
         $task -> dscrpt = $request->dscrpt;
         $task -> dt_ddl = $request->dt_ddl;
         $task -> addusr = Auth::user()->id;
-        $task -> rspusr = $request->rspusr;
+        $task -> rspusr = Auth::user()->id;
         $task->save();
         return redirect()->route('index');
     }
@@ -113,7 +112,6 @@ class TaskController extends Controller
         $task -> dscrpt = $request->dscrpt;
         $task -> dt_ddl = $request->dt_ddl;
         $task -> is_com = $request->is_com;
-        $task -> rspusr = $request->rspusr;
         $task->save();
         return redirect()->route('index');
     }
